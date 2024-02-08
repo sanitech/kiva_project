@@ -80,7 +80,7 @@ require "timeAgo.php";
                   <tr>
                    
                     <th> id </th>
-                    <th> screenshot </th>
+                    <th> Error Type </th>
                     <th> Department </th>
                     <th> Subject </th>
                     <th> created By </th>
