@@ -9,6 +9,7 @@ $db = $connect->dbConnection();
 $id = $_GET['id'];
 echo $status = $_GET['status'];
 
+$currentTimestamp = date('Y-m-d H:i:s');
 
 
 $stm = $db->prepare("SELECT * FROM helpdesk WHERE issue_id = '$id'");
@@ -22,7 +23,12 @@ if ($stm->rowCount() <= 0) {
 $stm = $db->prepare("SELECT * FROM helpdesk WHERE issue_id = '$id'");
 $stm->execute();
 $helpDesk = $stm->fetch(PDO::FETCH_ASSOC);
-$stm = $db->prepare("UPDATE helpdesk SET status='$status' WHERE issue_id='$id'");
+if($status=='done'){
+    $stm = $db->prepare("UPDATE helpdesk SET status='$status', work_end='$currentTimestamp' WHERE issue_id='$id'");
+}else{
+    $stm = $db->prepare("UPDATE helpdesk SET status='$status', work_start='$currentTimestamp' WHERE issue_id='$id'");
+}
+
 if ($stm->execute()) {
     header("location:../dashboard/?success=Successfully Updated status");
 }

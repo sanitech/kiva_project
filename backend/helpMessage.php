@@ -20,7 +20,7 @@ if (empty($dep) || empty($error) || empty($fname)) {
 }
 
 $currentTimestamp = date('Y-m-d H:i:s');
-var_dump($_FILES['screenshot']);
+// var_dump($_FILES['screenshot']);
 
 
 $cr=Time();

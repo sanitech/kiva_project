@@ -1,8 +1,12 @@
 <?php
 include_once "header.PHP";
 require "timeAgo.php";
+require "timeAgoDef.php";
 // date_default_timezone_set('UTC');
+
+$status = ['open', 'done', 'waiting', 'out source'];
 ?>
+<link rel="stylesheet" href="../assets/css/u.css">
 <!-- partial -->
 <div class="main-panel">
   <div class="content-wrapper">
@@ -44,29 +48,56 @@ require "timeAgo.php";
       <?php } ?>
 
     </div>
-<style>
-  #modelPreview{
-   
-    height: 0;
+    <?php
+    if (isset($_GET['error'])) {
+      $errMessage = $_GET['error'];
+    ?>
+      <div class="alert alert-danger"><?php echo $errMessage ?></div>
 
-  }
+    <?php
+    }
+    if (isset($_GET['success'])) {
+      $errMessage = $_GET['success'];
+    ?>
+      <div class="alert alert-success"><?php echo $errMessage ?></div>
 
-  .open-Model{
-   
-    background-color: #000000;
-    position:absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 10000;
-    width: 100%;
-    transform: translate(-50%, -50%);
-  }
-</style>
+    <?php
+    }
+    ?>
+    <!-- Default Modal -->
+    <div class="col-lg-4 col-md-6">
+      <div class="mt-3">
+        <!-- Button trigger modal -->
 
-    <div id="modelPreview" onclick="closeModel()">
-      <img src="" id="screenshotView" alt="" onclick="event=>event.stopPropagation()">
+        <!-- Modal -->
+        <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <form action="../backend/causeRecord.php" method="post" enctype="multipart/form-data">
+              <div class="modal-content">
+                <input type="hidden" name="issue_id" id="issue_id">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel1">Cause Model</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col mb-3">
+                      <label for="nameBasic" class="form-label">Cause</label>
+                      <input type="text" id="nameBasic" name="cause" class="form-control" placeholder="Enter cause" />
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="row ">
@@ -78,7 +109,7 @@ require "timeAgo.php";
               <table class="table">
                 <thead>
                   <tr>
-                   
+
                     <th> id </th>
                     <th> Error Type </th>
                     <th> Department </th>
@@ -86,6 +117,9 @@ require "timeAgo.php";
                     <th> created By </th>
                     <th> Created </th>
                     <th> Status </th>
+                    <th> End Time </th>
+                    <th> Cause </th>
+
                   </tr>
                 </thead>
                 <tbody>
@@ -94,15 +128,15 @@ require "timeAgo.php";
                   $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC");
                   $stm->execute();
                   foreach ($stm->fetchAll() as $help) :
-                    $type=$help['error_type'];
-                    $stm=$db->prepare("SELECT * FROM error WHERE error_type = '$type'");
+                    $type = $help['error_type'];
+                    $stm = $db->prepare("SELECT * FROM error WHERE error_type = '$type'");
                     $stm->execute();
-                    $error=$stm->fetch(PDO::FETCH_ASSOC);
+                    $error = $stm->fetch(PDO::FETCH_ASSOC);
 
                   ?>
                     <tr>
-                     
-                      <td> <?php echo $error['error_code']?$error['error_code']:'' ?> </td>
+
+                      <td> <?php echo $error['error_code'] ? $error['error_code'] : '' ?> </td>
                       <!-- <td>
                         <?php if ($help['screenshot']) { ?>
                           <img src="<?php echo $help['screenshot'] ?>" alt="image" id="screenshot" onclick="viewScreenSot('<?php echo $help['screenshot'] ?>')" />
@@ -114,79 +148,111 @@ require "timeAgo.php";
                         } ?>
                       </td> -->
                       <td>
-                        <?php  echo $help['error_type'] ?>
-                          
+                        <?php echo $help['error_type'] ?>
+
                       </td>
                       <td> <?php echo $help['dep'] ?> </td>
                       <td> <?php echo $help['subject'] ?> </td>
                       <td> <?php echo $help['fname'] ?> </td>
                       <td> <?php echo timeago($help['create_time']) ?> </td>
                       <td>
-
-                        <?php if ($help['status'] === 'send') { ?>
-                          <div class="dropdown">
-                            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuOutlineButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Status </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
-                              <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=done">Done</a>
-                              <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=waiting">waiting</a>
-                              <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=out source">out source</a>
-                              <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=open">Open</a>
-                            </div>
-                          </div>
                         <?php
-                        } elseif ($help['status'] === 'done') {
-                        ?>
-                          <div class="badge badge-outline-success">Done</div>
-                        <?php
-                        } elseif ($help['status'] === 'waiting') {
-                        ?>
-                          <div class="" style="display: flex; gap:10px">
+                        if ($help['cause'] === '') {
 
-                            <div class="badge badge-outline-info">waiting</div>
-                            <div class="dropdown">
+                        ?>
+                          <style>
+                            .status-container {
+                              display: grid;
+                              grid-template-columns: 1fr 1fr;
+                              grid-template-rows: 1fr 1fr;
+                              grid-template-areas: 'status selector'
+                                'cause cause';
+                              gap: 10px;
+
+                            }
+
+                            .cause {
+                              grid-area: cause;
+                            }
+
+                            .status {
+                              grid-area: status;
+                            }
+
+                            .selector {
+                              grid-area: selector;
+                            }
+                          </style>
+                        <?php
+
+                        } else {
+                        ?>
+                          <style>
+                            .status-container {
+                              display: flex;
+                              gap: 5px;
+
+                            }
+                          </style>
+                        <?php
+                        } ?>
+
+
+                        <?php
+
+                        if ($help['status'] !== 'done') {
+                          if ($help['status'] !== 'send') {
+                        ?>
+                            <div class="status-container">
+
+
+                              <div class="status badge badge-outline-<?php if ($help['status'] === 'out source') echo 'danger';
+                                                                      if ($help['status'] === 'waiting') echo 'warning';
+                                                                      if ($help['status'] === 'open') echo 'info' ?>"><?php echo $help['status'] ?></div>
+
+
+                              <button type="button" class="btn btn-danger cause" style="display: <?php echo $help['cause'] === '' ? 'block' : 'none' ?> ;" data-bs-toggle="modal" data-bs-target="#basicModal" onclick="setIssueID('<?php echo $help['issue_id'] ?>')">
+                                Insert cause
+                              </button>
+
+
+                            <?php
+                          }
+                            ?>
+                            <div class="dropdown selector">
                               <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuOutlineButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Status </button>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
-                                <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=done">Done</a>
-                                <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=out source">out source</a>
-                                <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=open">Open</a>
+                                <?php
+                                foreach ($status as $key => $value) {
+                                  if ($help['status'] === $value) continue;
+                                ?>
+                                  <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=<?php echo $value ?>"><?php echo ucwords($value) ?></a>
+                                <?php
+                                }
+                                ?>
                               </div>
-                            </div>
-                          </div>
-                        <?php
 
-                        } elseif ($help['status'] === 'out source') {
-                        ?>
-                          <div class="" style="display: flex; gap:10px">
-
-                            <div class="badge badge-outline-danger">out source</div>
-                            <div class="dropdown">
-                              <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuOutlineButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Status </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
-                                <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=done">Done</a>
-                                <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=waiting">waiting</a>
-                                <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=open">Open</a>
-                              </div>
                             </div>
-                          </div>
-                        <?php
-                        } elseif ($help['status'] === 'open') {
-                        ?>
-                          <div class="" style="display: flex; gap:10px">
 
-                            <div class="badge badge-outline-warning">Open</div>
-                            <div class="dropdown">
-                              <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuOutlineButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Status </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
-                                <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=done">Done</a>
-                                <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=waiting">waiting</a>
-                                <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=out source">out source</a>
-                              </div>
-                            </div>
-                          </div>
-                        <?php
+                          <?php
+                        } else { ?>
+                            <div class="badge badge-outline-success">Done</div>
+                          <?php
                         }
-
+                          ?>
+                            </div>
+                      </td>
+                      <td>
+                        <?php
+                        if ($help['work_start'] && $help['work_end']) {
+                          $start = $help['work_start'] ? $help['work_start'] : $help['create_time'];
+                          echo time_ago_def($help['work_start'], $help['work_end']);
+                        }
                         ?>
+                      </td>
+
+                      <td>
+                      <td> <?php echo $help['cause'] ?> </td>
 
                       </td>
                     </tr>
@@ -215,7 +281,7 @@ require "timeAgo.php";
 <script>
   const viewScreenSot = (screenshot) => {
     let screenshotView = document.querySelector('#screenshotView');
-   
+
     console.log(screenshot)
     screenshotView.classList.add('open-Model')
     screenshotView.src = screenshot
@@ -226,7 +292,9 @@ require "timeAgo.php";
     model.style.height = '0';
   }
 
-
+  const setIssueID = (issueID) => {
+    document.querySelector('#issue_id').value = issueID
+  }
 </script>
 
 <?php
