@@ -4,6 +4,8 @@ require "timeAgo.php";
 require "timeAgoDef.php";
 // date_default_timezone_set('UTC');
 
+
+
 $status = ['open', 'done', 'waiting', 'out source'];
 ?>
 <link rel="stylesheet" href="../assets/css/u.css">
@@ -63,6 +65,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
 
     <?php
     }
+
     ?>
     <!-- Default Modal -->
     <div class="col-lg-4 col-md-6">
@@ -100,46 +103,50 @@ $status = ['open', 'done', 'waiting', 'out source'];
       </div>
     </div>
 
-    <div class="row ">
-      <div class="col-12 grid-margin">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">Help Desk </h4>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
+    <?php
 
-                    <th> id </th>
-                    <th> Error Type </th>
-                    <th> Department </th>
-                    <th> Subject </th>
-                    <th> created By </th>
-                    <th> Created </th>
-                    <th> Status </th>
-                    <th> End Time </th>
-                    <th> Cause </th>
+    if ($userType === 'ICT') { ?>
 
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-
-                  $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC");
-                  $stm->execute();
-                  foreach ($stm->fetchAll() as $help) :
-                    $type = $help['error_type'];
-                    $stm = $db->prepare("SELECT * FROM error WHERE error_type = '$type'");
-                    $stm->execute();
-                    $error = $stm->fetch(PDO::FETCH_ASSOC);
-
-                  ?>
+      <div class="row ">
+        <div class="col-12 grid-margin">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Help Desk </h4>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
                     <tr>
 
-                      <td> <?php echo $error['error_code'] ? $error['error_code'] : '' ?> </td>
-                      <!-- <td>
-                        <?php if ($help['screenshot']) { ?>
-                          <img src="<?php echo $help['screenshot'] ?>" alt="image" id="screenshot" onclick="viewScreenSot('<?php echo $help['screenshot'] ?>')" />
+                      <th> id </th>
+                      <th> Error Type </th>
+                      <th> Department </th>
+                      <th> Subject </th>
+                      <th> created By </th>
+                      <th> Created </th>
+                      <th> Status </th>
+                      <th> End Time </th>
+                      <th> Cause </th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+
+                    $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC");
+                    $stm->execute();
+                    foreach ($stm->fetchAll() as $users) :
+                      $type = $users['error_type'];
+                      $stm = $db->prepare("SELECT * FROM error WHERE error_type = '$type'");
+                      $stm->execute();
+                      $error = $stm->fetch(PDO::FETCH_ASSOC);
+
+                    ?>
+                      <tr>
+
+                        <td> <?php echo $error['error_code'] ? $error['error_code'] : '' ?> </td>
+                        <!-- <td>
+                        <?php if ($users['screenshot']) { ?>
+                          <img src="<?php echo $users['screenshot'] ?>" alt="image" id="screenshot" onclick="viewScreenSot('<?php echo $users['screenshot'] ?>')" />
                         <?php } else {
                         ?>
                           <div class="badge badge-outline-warning">No screenshot</div>
@@ -147,128 +154,195 @@ $status = ['open', 'done', 'waiting', 'out source'];
                         <?php
                         } ?>
                       </td> -->
-                      <td>
-                        <?php echo $help['error_type'] ?>
+                        <td>
+                          <?php echo $users['error_type'] ?>
 
-                      </td>
-                      <td> <?php echo $help['dep'] ?> </td>
-                      <td> <?php echo $help['subject'] ?> </td>
-                      <td> <?php echo $help['fname'] ?> </td>
-                      <td> <?php echo timeago($help['create_time']) ?> </td>
-                      <td>
-                        <?php
-                        if ($help['cause'] === '') {
+                        </td>
+                        <td> <?php echo $users['dep'] ?> </td>
+                        <td> <?php echo $users['subject'] ?> </td>
+                        <td> <?php echo $users['fname'] ?> </td>
+                        <td> <?php echo timeago($users['create_time']) ?> </td>
+                        <td>
+                          <?php
+                          if ($users['cause'] === '') {
 
-                        ?>
-                          <style>
-                            .status-container {
-                              display: grid;
-                              grid-template-columns: 1fr 1fr;
-                              grid-template-rows: 1fr 1fr;
-                              grid-template-areas: 'status selector'
-                                'cause cause';
-                              gap: 10px;
+                          ?>
+                            <style>
+                              .status-container {
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                                grid-template-rows: 1fr 1fr;
+                                grid-template-areas: 'status selector'
+                                  'cause cause';
+                                gap: 10px;
 
+                              }
+
+                              .cause {
+                                grid-area: cause;
+                              }
+
+                              .status {
+                                grid-area: status;
+                              }
+
+                              .selector {
+                                grid-area: selector;
+                              }
+                            </style>
+                          <?php
+
+                          } else {
+                          ?>
+                            <style>
+                              .status-container {
+                                display: flex;
+                                gap: 5px;
+
+                              }
+                            </style>
+                          <?php
+                          } ?>
+
+
+                          <?php
+
+                          if ($users['status'] !== 'done') {
+                            if ($users['status'] !== 'send') {
+                          ?>
+                              <div class="status-container">
+
+
+                                <div class="status badge badge-outline-<?php if ($users['status'] === 'out source') echo 'danger';
+                                                                        if ($users['status'] === 'waiting') echo 'warning';
+                                                                        if ($users['status'] === 'open') echo 'info' ?>"><?php echo $users['status'] ?></div>
+
+
+                                <button type="button" class="btn btn-danger cause" style="display: <?php echo $users['cause'] === '' ? 'block' : 'none' ?> ;" data-bs-toggle="modal" data-bs-target="#basicModal" onclick="setIssueID('<?php echo $users['issue_id'] ?>')">
+                                  Insert cause
+                                </button>
+
+
+                              <?php
                             }
+                              ?>
+                              <div class="dropdown selector">
+                                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuOutlineButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Status </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
+                                  <?php
+                                  foreach ($status as $key => $value) {
+                                    if ($users['status'] === $value) continue;
+                                  ?>
+                                    <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $users['issue_id'] ?>&status=<?php echo $value ?>"><?php echo ucwords($value) ?></a>
+                                  <?php
+                                  }
+                                  ?>
+                                </div>
 
-                            .cause {
-                              grid-area: cause;
-                            }
+                              </div>
 
-                            .status {
-                              grid-area: status;
-                            }
-
-                            .selector {
-                              grid-area: selector;
-                            }
-                          </style>
-                        <?php
-
-                        } else {
-                        ?>
-                          <style>
-                            .status-container {
-                              display: flex;
-                              gap: 5px;
-
-                            }
-                          </style>
-                        <?php
-                        } ?>
-
-
-                        <?php
-
-                        if ($help['status'] !== 'done') {
-                          if ($help['status'] !== 'send') {
-                        ?>
-                            <div class="status-container">
-
-
-                              <div class="status badge badge-outline-<?php if ($help['status'] === 'out source') echo 'danger';
-                                                                      if ($help['status'] === 'waiting') echo 'warning';
-                                                                      if ($help['status'] === 'open') echo 'info' ?>"><?php echo $help['status'] ?></div>
-
-
-                              <button type="button" class="btn btn-danger cause" style="display: <?php echo $help['cause'] === '' ? 'block' : 'none' ?> ;" data-bs-toggle="modal" data-bs-target="#basicModal" onclick="setIssueID('<?php echo $help['issue_id'] ?>')">
-                                Insert cause
-                              </button>
-
-
+                            <?php
+                          } else { ?>
+                              <div class="badge badge-outline-success">Done</div>
                             <?php
                           }
                             ?>
-                            <div class="dropdown selector">
-                              <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuOutlineButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Status </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
-                                <?php
-                                foreach ($status as $key => $value) {
-                                  if ($help['status'] === $value) continue;
-                                ?>
-                                  <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $help['issue_id'] ?>&status=<?php echo $value ?>"><?php echo ucwords($value) ?></a>
-                                <?php
-                                }
-                                ?>
                               </div>
-
-                            </div>
-
+                        </td>
+                        <td>
                           <?php
-                        } else { ?>
-                            <div class="badge badge-outline-success">Done</div>
-                          <?php
-                        }
+                          if ($users['work_start'] && $users['work_end']) {
+                            $start = $users['work_start'] ? $users['work_start'] : $users['create_time'];
+                            echo time_ago_def($users['work_start'], $users['work_end']);
+                          }
                           ?>
-                            </div>
-                      </td>
-                      <td>
-                        <?php
-                        if ($help['work_start'] && $help['work_end']) {
-                          $start = $help['work_start'] ? $help['work_start'] : $help['create_time'];
-                          echo time_ago_def($help['work_start'], $help['work_end']);
-                        }
-                        ?>
-                      </td>
+                        </td>
 
-                      <td>
-                      <td> <?php echo $help['cause'] ?> </td>
+                        <td>
+                        <td> <?php echo $users['cause'] ?> </td>
 
-                      </td>
-                    </tr>
+                        </td>
+                      </tr>
 
-                  <?php
-                  endforeach;
-                  ?>
+                    <?php
+                    endforeach;
+                    ?>
 
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
+    <?php
+    } else if ($userType === 'super') {
+    ?>
+
+      <div class="row ">
+        <div class="col-12 grid-margin">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Help Desk </h4>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+
+                      <th> id </th>
+                      <th> UserName </th>
+                      <th> Status </th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+
+                    $stm = $db->prepare("SELECT * FROM users ORDER BY last_login DESC");
+                    $stm->execute();
+                    foreach ($stm->fetchAll() as $i => $users) :
+                      if ($users['dep']==='super') continue;
+
+
+                    ?>
+                      <tr>
+                        <td><?php echo ++$i ?></td>
+                     
+                        <td>
+                          <?php echo ucwords($users['username']) ?>
+                        </td>
+                        <td>
+                          <?php echo ucwords($users['dep']) ?>
+                        </td>
+                        <td>
+                          <a href="../backend/statusUpdater.php?id=<?php echo $users['uid'] ?>">
+                            <div class="status badge badge-outline-<?php echo $users['status']?'success':'danger' ?>"><?php echo $users['status']?'Enabled':'Disable' ?></div>
+                          </a>
+                        </td>
+                      </tr>
+
+                    <?php
+                    endforeach;
+                    ?>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+    <?php
+    }
+
+    ?>
   </div>
 
 </div>

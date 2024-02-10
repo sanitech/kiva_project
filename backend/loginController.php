@@ -19,20 +19,27 @@ $stm = $db->prepare("SELECT * FROM users WHERE username='$name'");
 $stm->execute();
 if (0 < count($stm->fetchAll())) {
 
-    $stm = $db->prepare("SELECT uid, password, username FROM users WHERE username='$name'");
+    $stm = $db->prepare("SELECT * FROM users WHERE username='$name'");
     $stm->execute();
     $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
 
     if ($userInfo['password'] == $password) {
-        session_start();
         var_dump($userInfo);
-        $_SESSION['isLogin'] = true;
-        $_SESSION['userinfo'] = $userInfo['uid'];
+        if(!$userInfo['status']){
+            header('location:../?error=Your account block by admin');
+            exit();
+        }else{
+        session_start();
 
-        header('location:../dashboard/');
+            $_SESSION['isLogin'] = true;
+            $_SESSION['userinfo'] = $userInfo['uid'];
+            $_SESSION['userType'] = $userInfo['dep'];
+            
+            header('location:../dashboard/');
+        }
     } else {
-        header('location:../dashboard/setting.php?error=username or password invalid');
+        header('location:../?error=username or password invalid');
     }
 } else {
-    header('location:../dashboard/setting.php?error=username or password invalid');
+    header('location:../?error=username or password invalid');
 }

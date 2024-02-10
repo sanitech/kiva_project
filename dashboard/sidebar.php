@@ -7,70 +7,95 @@
            <li class="nav-item nav-category">
                <span class="nav-link">Navigation</span>
            </li>
+
            <li class="nav-item menu-items">
-               <a class="nav-link" href="index.php">
-                   <span class="menu-icon">
-                       <i class="mdi mdi-speedometer"></i>
-                   </span>
-                   <span class="menu-title">Dashboard</span>
-               </a>
-           </li>
-           <li class="nav-item menu-items">
-               <a class="nav-link" href="addItem.php">
-                   <span class="menu-icon">
-                       <i class="mdi mdi-laptop"></i>
-                   </span>
-                   <span class="menu-title">Record item</span>
-               </a>
-           </li>
-           <li class="nav-item menu-items">
-               <a class="nav-link" href="department.php">
-                   <span class="menu-icon">
-                       <i class="mdi mdi-briefcase"></i>
-                   </span>
-                   <span class="menu-title">Department</span>
-               </a>
-           </li>
-           <li class="nav-item menu-items">
-               <a class="nav-link" href="users.php">
-                   <span class="menu-icon">
-                       <i class="mdi mdi-account-multiple"></i>
-                   </span>
-                   <span class="menu-title">User Management</span>
-               </a>
-           </li>
-           <li class="nav-item menu-items">
-               <a class="nav-link" href="employee.php">
-                   <span class="menu-icon">
-                       <i class="mdi mdi-account-multiple-plus"></i>
-                   </span>
-                   <span class="menu-title">Employee</span>
-               </a>
-           </li>
-           <li class="nav-item menu-items">
-               <a class="nav-link" href="addproduct.php">
-                   <span class="menu-icon">
-                       <i class="mdi mdi-laptop"></i>
-                   </span>
-                   <span class="menu-title">Record Product</span>
-               </a>
-           </li>
-           <li class="nav-item menu-items">
-               <a class="nav-link" href="product.php">
-                   <span class="menu-icon">
-                       <i class="mdi mdi-table"></i>
-                   </span>
-                   <span class="menu-title"> Products</span>
-               </a>
-           </li>
-           <li class="nav-item menu-items">
-               <a class="nav-link" href="errorCode.php">
-                   <span class="menu-icon">
-                       <i class="mdi mdi-settings"></i>
-                   </span>
-                   <span class="menu-title">Error code</span>
-               </a>
-           </li>
+                   <a class="nav-link" href="index.php">
+                       <span class="menu-icon">
+                           <i class="mdi mdi-speedometer"></i>
+                       </span>
+                       <span class="menu-title">Dashboard</span>
+                   </a>
+               </li>
+
+           <?php
+
+            if ($userType === 'ICT') { ?>
+
+               <li class="nav-item menu-items">
+                   <a class="nav-link" href="addItem.php">
+                       <span class="menu-icon">
+                           <i class="mdi mdi-laptop"></i>
+                       </span>
+                       <span class="menu-title">Record item</span>
+                   </a>
+               </li>
+
+
+           <?php
+            }
+            if ($userType == 'super') { ?>
+
+               <li class="nav-item menu-items">
+                   <a class="nav-link" href="department.php">
+                       <span class="menu-icon">
+                           <i class="mdi mdi-briefcase"></i>
+                       </span>
+                       <span class="menu-title">Department</span>
+                   </a>
+               </li>
+               <li class="nav-item menu-items">
+                   <a class="nav-link" href="users.php">
+                       <span class="menu-icon">
+                           <i class="mdi mdi-account-multiple"></i>
+                       </span>
+                       <span class="menu-title">User Management</span>
+                   </a>
+               </li>
+               <li class="nav-item menu-items">
+                   <a class="nav-link" href="employee.php">
+                       <span class="menu-icon">
+                           <i class="mdi mdi-account-multiple-plus"></i>
+                       </span>
+                       <span class="menu-title">Employee</span>
+                   </a>
+               </li>
+           <?php
+            }
+            ?>
+
+
+           <?php
+
+            if ($userType === 'ICT') { ?>
+
+
+               <li class="nav-item menu-items">
+                   <a class="nav-link" href="addproduct.php">
+                       <span class="menu-icon">
+                           <i class="mdi mdi-laptop"></i>
+                       </span>
+                       <span class="menu-title">Record Product</span>
+                   </a>
+               </li>
+               <li class="nav-item menu-items">
+                   <a class="nav-link" href="product.php">
+                       <span class="menu-icon">
+                           <i class="mdi mdi-table"></i>
+                       </span>
+                       <span class="menu-title"> Products</span>
+                   </a>
+               </li>
+               <li class="nav-item menu-items">
+                   <a class="nav-link" href="errorCode.php">
+                       <span class="menu-icon">
+                           <i class="mdi mdi-settings"></i>
+                       </span>
+                       <span class="menu-title">Error code</span>
+                   </a>
+               </li>
+           <?php
+            }
+            ?>
            <li class="nav-item menu-items">
                <a class="nav-link" href="setting.php">
                    <span class="menu-icon">

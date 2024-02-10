@@ -3,6 +3,8 @@ session_start();
 if (isset($_SESSION['isLogin'])) {
   header('Location:dashboard/');
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +49,9 @@ if (isset($_SESSION['isLogin'])) {
                   <div class="alert alert-danger"><?php echo $errorMessage ?></div>
 
                 <?php
+
                 }
+
                 ?>
                 <form action="backend/loginController.php" method="POST" enctype="multipart/form-data">
                   <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">

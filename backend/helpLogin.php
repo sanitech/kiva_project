@@ -24,11 +24,16 @@ if (0 < count($stm->fetchAll())) {
     $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
 
     if ($userInfo['password'] == $password) {
-        session_start();
-        var_dump($userInfo);
-      
-        $_SESSION['helpSession'] = $userInfo['uid'];
-        header('location:../helpDesk/');
+        if(!$userInfo['status']){
+            header('location:../help.php?error=Your account block');
+            exit();
+        }else{
+            session_start();
+            var_dump($userInfo);
+            $_SESSION['helpSession'] = $userInfo['uid'];
+            header('location:../helpDesk/');
+        }
+       
     } else {
         header('location:../help.php?error=department or password invalid');
     }

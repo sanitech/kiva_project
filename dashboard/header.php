@@ -5,6 +5,7 @@ if (!isset($_SESSION['isLogin'])) {
     header('Location:../?error=your not logged in');
 }
 
+$userType = $_SESSION['userType'];
 
 $connect = new dbConnect();
 
