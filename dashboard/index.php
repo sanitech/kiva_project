@@ -284,7 +284,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
         <div class="col-12 grid-margin">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">Help Desk </h4>
+              <h4 class="card-title">User Management </h4>
               <div class="table-responsive">
                 <table class="table">
                   <thead>
@@ -292,6 +292,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
 
                       <th> id </th>
                       <th> UserName </th>
+                      <th> Department </th>
                       <th> Status </th>
 
                     </tr>

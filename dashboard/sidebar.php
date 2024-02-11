@@ -59,6 +59,14 @@
                        <span class="menu-title">Employee</span>
                    </a>
                </li>
+               <li class="nav-item menu-items">
+                   <a class="nav-link" href="errorCode.php">
+                       <span class="menu-icon">
+                           <i class="mdi mdi-settings"></i>
+                       </span>
+                       <span class="menu-title">Error code</span>
+                   </a>
+               </li>
            <?php
             }
             ?>
@@ -85,14 +93,7 @@
                        <span class="menu-title"> Products</span>
                    </a>
                </li>
-               <li class="nav-item menu-items">
-                   <a class="nav-link" href="errorCode.php">
-                       <span class="menu-icon">
-                           <i class="mdi mdi-settings"></i>
-                       </span>
-                       <span class="menu-title">Error code</span>
-                   </a>
-               </li>
+              
            <?php
             }
             ?>
@@ -102,6 +103,14 @@
                        <i class="mdi mdi-settings"></i>
                    </span>
                    <span class="menu-title">Setting</span>
+               </a>
+           </li>
+           <li class="nav-item menu-items">
+               <a class="nav-link" href="report.php">
+                   <span class="menu-icon">
+                       <i class="mdi mdi-settings"></i>
+                   </span>
+                   <span class="menu-title">Report</span>
                </a>
            </li>
            <li class="nav-item menu-items">

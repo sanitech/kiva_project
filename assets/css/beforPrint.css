@@ -1,0 +1,128 @@
+:root{
+    --table--header--bg--color: #f78a3d;
+}
+
+
+body {
+    width: 100%;
+    margin: auto;
+    height: 100vh;
+    overflow: scroll;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+.container{
+    width: 70%;
+    margin: auto;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+thead tr {
+    background-color: #f78a3d !important;
+}
+tr th,
+tr td {
+    padding: 15px;
+    text-align: left;
+    /* border: 1px solid #ddd; */
+}
+
+
+.row:nth-of-type(odd){
+    background-color: #ddd;
+}
+
+.report-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ddd;
+    width: 100%;
+    margin:  20px auto;
+}
+
+.logo img {
+    width: 100px;
+}
+.date{
+    margin-bottom: 5px;
+}
+.report-info{
+    text-align: right;
+}
+.status{
+    padding: 4px 8px;
+    text-transform: capitalize;
+    color: #181818;
+    display: flex;
+    justify-content: center;align-items: center;
+    border-radius: 5px;
+}
+.status-danger{
+    color: #FC424A;
+    border: 1px solid #FC424A;
+}
+.status-success{
+    color: #26D974;
+    border: 1px solid #26D974;
+}
+.status-warning{
+    color: #FFAB00;
+    border: 1px solid #FFAB00;
+
+}
+
+.print-controller{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    height: 55px;
+    gap: 10px;
+}
+
+.print-controller i{
+    font-size: 30px;
+    background-color: #181818;
+    color: #f78a3d;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: all .3s ease-in-out;
+}
+
+.print-controller i:hover{
+    background-color: #f78a3d;
+    color: #181818;
+}
+@page{
+    size: landscape;
+}
+@media print{
+    
+    body{
+        font-size: 12px;
+    }
+    .container{
+        width: 100%;
+    }
+
+    thead tr {
+        background-color: var(--table--header--bg--color) !important;
+        -webkit-print-color-adjust: exact;
+    }
+   
+    .row:nth-of-type(odd){
+        background-color: #ddd;
+        -webkit-print-color-adjust: exact;
+
+    }
+    .print-controller{
+        display: none;
+    }
+}

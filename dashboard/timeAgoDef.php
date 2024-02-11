@@ -13,9 +13,9 @@ function time_ago_def($date1, $date2) {
   
     // Convert seconds to units and format the string
     $units = array(
-      3600 => "h",
-      60 => "min",
-      1 => "sec",
+      3600 => "H",
+      60 => "M",
+      1 => "S",
     );
   
     $time_diff_str = "";
@@ -23,7 +23,7 @@ function time_ago_def($date1, $date2) {
     foreach ($units as $seconds => $unit) {
       $value = floor($total_seconds / $seconds);
       if ($value > 0) {
-        $time_diff_str .=  $value . " " . $unit . ($value > 1 ? "s" : "") ;
+        $time_diff_str .=  $value . " " . $unit . ($value > 1 ? " " : "") ;
         $prev_unit = $seconds;
       }
       $total_seconds %= $seconds;
