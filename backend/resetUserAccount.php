@@ -17,7 +17,7 @@ $stm->execute();
 $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
 $name=$userInfo['username'];
 
-$stm = $db->prepare("UPDATE users SET password = '$password' WHERE id = '$id'");
+$stm = $db->prepare("UPDATE users SET password = '$password' WHERE uid = '$id'");
 if ($stm->execute()) {
-    header("location:../dashboard/user.php?success=Successfully Reset account Name $name Password 'admin'");
+    header("location:../dashboard/users.php?success=Successfully Reset account Name $name Password 'admin'");
 }

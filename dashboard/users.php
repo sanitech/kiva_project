@@ -162,7 +162,7 @@ include_once "header.PHP";
                                         <tr>
                                             <td><?php echo ++$i ?></td>
                                             <td><?php echo $row['username'] ?></td>
-                                            <td><a href="../backend/deleteUser.php?uid=<?php echo $row['uid'] ?>">
+                                            <td><a href="../backend/resetUserAccount.php?id=<?php echo $row['uid'] ?>">
                                                     <div class="badge badge-outline-warning">Reset Account</div>
                                                 </a>
                                             </td>
