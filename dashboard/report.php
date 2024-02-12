@@ -3,7 +3,9 @@
 require "../dashboard/timeAgoDef.php";
 require('../config/connection.php');
 session_start();
-
+if (!isset($_SESSION['isLogin'])) {
+    header('Location:../admin.php?error=your not logged in');
+}
 $connect = new dbConnect();
 
 $db = $connect->dbConnection();
@@ -12,7 +14,10 @@ $stm = $db->prepare("SELECT * FROM users WHERE uid='$uid'");
 $stm->execute();
 
 $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
-
+if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empty($_GET['end'])){
+    $start=$_GET['start'];
+    $end=$_GET['end'];  
+}
 ?>
 
 <!DOCTYPE html>
@@ -51,15 +56,23 @@ $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
     background-color: red;
     margin-left: 10px;
 }
+.form-container label{
+    font-family:  sans-serif;
+    margin-right: 10px;
+    font-size: 1.2em;
+    font-weight: 500;
+}
 </style>
 
 <body>
     <div class="container">
         <div class="print-controller">
-            <form action="" method="get" enctype="multipart/form-data">
-                <input type="date" name="start" id="" class="date-picker">
-                <input type="date" name="end" id="" class="date-picker">
-                <button class="btn-sub ">Generate</button>
+            <form action="" method="get" enctype="multipart/form-data" class="form-container">
+                <label for="start">From</label>
+                <input type="date" name="start" id="start" class="date-picker">
+                <label for="end">To</label>
+                <input type="date" name="end" id="end" class="date-picker">
+                <button class="btn-sub" type="submit ">Generate</button>
             </form>
            <a href="report.php"> <button class="btn-sub rest">Reset Filter</button></a>
             <i class="bi bi-printer" onclick="print()"></i>
@@ -73,7 +86,7 @@ $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
             <div class="report-info">
 
                 <div class="date"><?php echo date('d-m-Y H:i a') ?></div>
-                <div class="title">All report</div>
+                <div class="title">All report <?= isset($start)&& isset($end)?$start. ' / '. $end:'' ?></div>
             </div>
         </div>
         <table class="table">
@@ -83,6 +96,7 @@ $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
                     <th class="cell">Error type</th>
                     <th class="cell">Department</th>
                     <th class="cell">Subject</th>
+                    <th class="cell">From</th>
                     <th class="cell">Completed</th>
                     <th>Status</th>
                     <th class="cell">By Who</th>
@@ -90,9 +104,9 @@ $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
             </thead>
             <tbody>
                 <?php
-                if(isset($_GET['start'])&& isset($_GET['end'])){
+                if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empty($_GET['end'])){
                     $start=$_GET['start'];
-                    $end=$_GET['end'];
+                    $end=$_GET['end'];  
                     $stm = $db->prepare("SELECT * FROM helpdesk WHERE date BETWEEN '$start' AND '$end' ORDER BY create_time DESC");
                 }
                 elseif($userInfo['dep'] == 'super') {
@@ -108,6 +122,7 @@ $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
                         <td><?= $help['error_type'] ?></td>
                         <td><?= $help['dep'] ?></td>
                         <td><?= $help['subject'] ?></td>
+                        <td><?= $help['location'] ?></td>
                         <td> <?php
                                 if ($help['work_start'] && $help['work_end']) {
                                     $start = $help['work_start'] ? $help['work_start'] : $help['create_time'];

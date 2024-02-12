@@ -16,8 +16,19 @@ $stm->execute();
 
 $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
 $name=$userInfo['username'];
+$whatReset=$_GET['what'];
 
-$stm = $db->prepare("UPDATE users SET password = '$password' WHERE uid = '$id'");
+if($whatReset=="profile"){
+    $stm = $db->prepare("UPDATE users SET profile = '' WHERE uid = '$id'");
+}else if($whatReset = "password"){
+
+    $stm = $db->prepare("UPDATE users SET password = '$password' WHERE uid = '$id'");
+}
 if ($stm->execute()) {
-    header("location:../dashboard/users.php?success=Successfully Reset account Name $name Password 'admin'");
+    if($whatReset=="profile"){
+        header("location:../dashboard/setting.php?success=Successfully Reset Profile Picture");
+    }else if($whatReset = "password"){
+        header("location:../dashboard/users.php?success=Successfully Reset account Name $name Password 'admin'");
+    
+    }
 }

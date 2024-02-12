@@ -36,7 +36,9 @@ include_once "header.PHP";
                                         <?php
                                         $stm = $db->prepare("SELECT * FROM department");
                                         $stm->execute();
-                                        foreach ($stm->fetchAll() as $item) { ?>
+                                        foreach ($stm->fetchAll() as $item) { 
+                                            if($item['dep']==='ICT')continue;
+                                            ?>
                                             <option value="<?php echo $item['dep'] ?>"><?php echo $item['dep'] ?></option>
                                         <?php
                                         }
@@ -112,7 +114,8 @@ include_once "header.PHP";
                                     $stm->execute();
                                     foreach ($stm->fetchAll() as $i => $row) {
                                         $id = $_SESSION['userinfo'];
-                                        if ($row['uid'] === $id) continue;
+                                        if ($row['uid'] === $id || $row['dep']==='ICT') continue;
+
                                     ?>
 
                                         <tr>
@@ -162,7 +165,7 @@ include_once "header.PHP";
                                         <tr>
                                             <td><?php echo ++$i ?></td>
                                             <td><?php echo $row['username'] ?></td>
-                                            <td><a href="../backend/resetUserAccount.php?id=<?php echo $row['uid'] ?>">
+                                            <td><a href="../backend/resetUserAccount.php?id=<?php echo $row['uid'] ?>&who=password">
                                                     <div class="badge badge-outline-warning">Reset Account</div>
                                                 </a>
                                             </td>

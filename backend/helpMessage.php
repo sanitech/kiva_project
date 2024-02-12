@@ -11,6 +11,7 @@ $dep = $_POST['dep'];
 $subject = $_POST['subject'];
 $fname = $_POST['fname'];
 $error = $_POST['error'];
+$location = $_POST['location'];
 
 
 
@@ -37,7 +38,7 @@ $screenshotPath=null;
 
 echo $helpID='Help-'.substr($cr, 5);
 $date=date('Y-m-d');
-$stm = $db->prepare("INSERT INTO helpdesk(issue_id, fname, dep, subject, create_time, status, error_type, by_who, date) VALUES ('$helpID', '$fname', '$dep', '$subject', '$currentTimestamp', 'send', '$error','all', '$date')");
+$stm = $db->prepare("INSERT INTO helpdesk(issue_id, fname, dep, subject, create_time, status, error_type, by_who, date, location) VALUES ('$helpID', '$fname', '$dep', '$subject', '$currentTimestamp', 'send', '$error','all', '$date', '$location')");
 if ($stm->execute()) {
     header('location:../helpDesk/index.php?success=Successfully send message');
 }

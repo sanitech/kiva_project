@@ -57,15 +57,21 @@ tr td {
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
 }
+.logo{
+    padding: 0 15px;
+    
+}
 
 .logo img {
     width: 100px;
+
 }
 .date{
     margin-bottom: 5px;
 }
 .report-info{
     text-align: right;
+    padding: 0 15px;
 }
 .status{
     padding: 4px 8px;

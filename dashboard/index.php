@@ -123,6 +123,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
                       <th> Subject </th>
                       <th> created By </th>
                       <th> Created </th>
+                      <th> From </th>
                       <th> Status </th>
                       <th> End Time </th>
                       <th> Cause </th>
@@ -162,6 +163,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
                         <td> <?php echo $users['dep'] ?> </td>
                         <td> <?php echo $users['subject'] ?> </td>
                         <td> <?php echo $users['fname'] ?> </td>
+                        <td> <?php echo $users['location'] ?> </td>
                         <td> <?php echo timeago($users['create_time']) ?> </td>
                         <td>
                           <?php

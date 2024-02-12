@@ -73,6 +73,14 @@ $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
                                                     ?>
                                                 </select>
                                         </div>
+                                            <div class="form-group">
+                                                <label>Location </label>
+                                                <select name="location" id="" class="form-control">
+                                                        <option value="Addis Abeba"> Addis Abeba</option>
+                                                        <option value="Adama"> Adama</option>
+                                                        <option value="Dire Dawa"> Dire Dawa</option>
+                                                </select>
+                                        </div>
                                         <div class="form-group">
                                             <label for="exampleInputPassword1">Subject</label>
                                             <textarea name="subject" id="" class="form-control" cols="30" rows="10"></textarea>

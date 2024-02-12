@@ -46,7 +46,7 @@ include_once "header.PHP";
                         </label>
                         <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
                             <i class="bx bx-reset d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Reset</span>
+                          <a href="../backend/resetUserAccount.php?id=<?php echo $userInfo['uid'] ?>&what=profile">  <span class="d-none d-sm-block" style="color: #fff; text-decoration:none;">Reset</span></a>
                         </button>
 
                         <p class="text-muted mb-0">Allowed JPG, GIF or PNG.</p>
@@ -81,7 +81,6 @@ include_once "header.PHP";
                         <button type="submit" class="btn btn-primary me-2">Change Password</button>
                     </div>
                 </form>
-                <div id="" class="setting-profile"></div>
             </div>
             <!-- /Account -->
         </div>

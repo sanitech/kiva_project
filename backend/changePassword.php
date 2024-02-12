@@ -20,7 +20,7 @@ if (strlen($newPass) < 6) {
   exit();
 }
 
-echo $id = $_SESSION['isLogin'];
+echo $id = $_SESSION['userinfo'];
 $stm = $db->prepare("SELECT * FROM users WHERE uid = '$id'");
 $stm->execute();
 $newPass = md5($newPass);

@@ -6,7 +6,7 @@ include_once "header.PHP";
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
-            <div class="col-md-10 grid-margin stretch-card">
+            <div class="col-md-6 grid-margin">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Record Item</h4>
@@ -42,7 +42,7 @@ include_once "header.PHP";
                 </div>
             </div>
 
-            <div class="col-lg-12 grid-margin stretch-card">
+            <div class="col-lg-6 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Item Table</h4>
