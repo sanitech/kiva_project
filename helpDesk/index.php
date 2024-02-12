@@ -79,7 +79,7 @@ $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
                                         </div>
 
                                         <button type="submit" class="btn btn-primary me-2">Submit</button>
-                                        <a href="../backend/logoutHelpDesk.php" class="btn btn-outline-danger me-2">Exit</a>
+                                        <a href="../backend/logout.php?to=index" class="btn btn-outline-danger me-2">Exit</a>
                                     </div>
                                 </div>
                         </div>

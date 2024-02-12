@@ -37,7 +37,7 @@ $screenshotPath=null;
 
 echo $helpID='Help-'.substr($cr, 5);
 
-$stm = $db->prepare("INSERT INTO helpdesk(issue_id, fname, dep, subject, create_time, status, error_type) VALUES ('$helpID', '$fname', '$dep', '$subject', '$currentTimestamp', 'send', '$error')");
+$stm = $db->prepare("INSERT INTO helpdesk(issue_id, fname, dep, subject, create_time, status, error_type, by_who) VALUES ('$helpID', '$fname', '$dep', '$subject', '$currentTimestamp', 'send', '$error','all')");
 if ($stm->execute()) {
     header('location:../helpDesk/index.php?success=Successfully send message');
 }

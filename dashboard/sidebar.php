@@ -114,7 +114,7 @@
                </a>
            </li>
            <li class="nav-item menu-items">
-               <a class="nav-link" href="../backend/logout.php">
+               <a class="nav-link" href="../backend/logout.php?to=admin">
                    <span class="menu-icon">
                        <i class="mdi mdi-logout"></i>
                    </span>

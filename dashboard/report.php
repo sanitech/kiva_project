@@ -38,7 +38,7 @@ $db = $connect->dbConnection();
             </div>
             <div class="report-info">
                 <div class="date"><?php echo date('d/m/Y H:i a')?></div>
-                <div class="title">All report lice</div>
+                <div class="title">All report</div>
             </div>
         </div>
         <table class="table">
@@ -74,8 +74,9 @@ $db = $connect->dbConnection();
                     <td > <div class=" status status-<?php if ($help['status'] === 'out source') echo 'danger';
                                                                         if ($help['status'] === 'waiting') echo 'warning';
                                                                         if ($help['status'] === 'open') echo 'info';
-                                                                        if ($help['status'] === 'done') echo 'success' ?>"> <?= $help['status'] ?> </div></td>
-                    <td><?= $help['fname'] ?></td>
+                                                                        if ($help['status'] === 'done') echo 'success';
+                                                                        if ($help['status'] === 'send') echo 'danger' ?>"> <?= $help['status'] ?> </div></td>
+                    <td><?= ucwords( $help['by_who'] )?></td>
 
                 </tr>
                 <?php

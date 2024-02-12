@@ -10,7 +10,7 @@ $dep = $_POST['dep'];
 $password = md5($_POST['password']);
 
 if (empty($dep) || empty($password)) {
-    header('location:help.php?error=failed require');
+    header('location:../index.php?error=failed require');
     exit();
 }
 
@@ -19,13 +19,13 @@ $stm = $db->prepare("SELECT * FROM users WHERE dep='$dep'");
 $stm->execute();
 if (0 < count($stm->fetchAll())) {
 
-    $stm = $db->prepare("SELECT uid, password, username FROM users WHERE dep='$dep'");
+    $stm = $db->prepare("SELECT * FROM users WHERE dep='$dep'");
     $stm->execute();
     $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
 
     if ($userInfo['password'] == $password) {
         if(!$userInfo['status']){
-            header('location:../help.php?error=Your account block');
+            header('location:../index.php?error=Your account block');
             exit();
         }else{
             session_start();
@@ -35,8 +35,8 @@ if (0 < count($stm->fetchAll())) {
         }
        
     } else {
-        header('location:../help.php?error=department or password invalid');
+        header('location:../index.php?error=department or password invalid');
     }
 } else {
-    header('location:../help.php?error=department or password invalid');
+    header('location:../index.php?error=department or password invalid');
 }

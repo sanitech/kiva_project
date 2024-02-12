@@ -10,7 +10,7 @@ $name = $_POST['username'];
 $password = md5($_POST['password']);
 
 if (empty($name) || empty($password)) {
-    header('location:../dashboard/setting.php?error=failed require');
+    header('location:../admin.php?error=failed require');
     exit();
 }
 
@@ -26,7 +26,7 @@ if (0 < count($stm->fetchAll())) {
     if ($userInfo['password'] == $password) {
         var_dump($userInfo);
         if(!$userInfo['status']){
-            header('location:../?error=Your account block by admin');
+            header('location:../admin.php?error=Your account block by admin');
             exit();
         }else{
         session_start();
@@ -38,8 +38,8 @@ if (0 < count($stm->fetchAll())) {
             header('location:../dashboard/');
         }
     } else {
-        header('location:../?error=username or password invalid');
+        header('location:../admin.php?error=username or password invalid');
     }
 } else {
-    header('location:../?error=username or password invalid');
+    header('location:../admin.php?error=username or password invalid');
 }

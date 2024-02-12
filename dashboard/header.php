@@ -2,14 +2,21 @@
 require('../config/connection.php');
 session_start();
 if (!isset($_SESSION['isLogin'])) {
-    header('Location:../?error=your not logged in');
+    header('Location:../admin.php?error=your not logged in');
 }
 
 $userType = $_SESSION['userType'];
+$uid = $_SESSION['userinfo'];
+
 
 $connect = new dbConnect();
 
 $db = $connect->dbConnection();
+
+$stm=$db->prepare("SELECT * FROM users WHERE uid='$uid'");
+$stm->execute();
+
+$userInfo = $stm->fetch(PDO::FETCH_ASSOC);
 
 ?>
 <!DOCTYPE html>

@@ -4,3 +4,22 @@
 .pointer {
   cursor: pointer;
 }
+.setting-profile,
+.no-profile {
+  background: blueviolet;
+  color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.setting-profile{
+padding: 30px 30px;
+font-size: 2rem;
+font-weight: bold;
+}
+
+.rounded{
+  width: 100px;
+}

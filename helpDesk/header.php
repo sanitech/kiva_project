@@ -2,7 +2,7 @@
 require('../config/connection.php');
 session_start();
 if (!isset($_SESSION['helpSession'])) {
-    header('Location:../help.php?error=your not logged in');
+    header('Location:../index.php?error=your not logged in');
 }
 
 

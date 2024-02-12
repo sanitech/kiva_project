@@ -135,6 +135,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
                     $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC");
                     $stm->execute();
                     foreach ($stm->fetchAll() as $users) :
+                      if($users['by_who'] !== $userInfo['username'] && $users['by_who'] !== 'all') continue;
                       $type = $users['error_type'];
                       $stm = $db->prepare("SELECT * FROM error WHERE error_type = '$type'");
                       $stm->execute();
@@ -303,9 +304,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
                     $stm = $db->prepare("SELECT * FROM users ORDER BY last_login DESC");
                     $stm->execute();
                     foreach ($stm->fetchAll() as $i => $users) :
-                      if ($users['dep']==='super') continue;
-
-
+                      if ($users['dep']==='super'||$users['dep']==='admin'|| $users['dep'] === 'ict' || $users['dep']==='ICT') continue;
                     ?>
                       <tr>
                         <td><?php echo ++$i ?></td>
@@ -317,7 +316,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
                           <?php echo ucwords($users['dep']) ?>
                         </td>
                         <td>
-                          <a href="../backend/statusUpdater.php?id=<?php echo $users['uid'] ?>">
+                          <a href="../backend/statusUpdater.php?id=<?php echo $users['uid'] ?>&from=index">
                             <div class="status badge badge-outline-<?php echo $users['status']?'success':'danger' ?>"><?php echo $users['status']?'Enabled':'Disable' ?></div>
                           </a>
                         </td>

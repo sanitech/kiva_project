@@ -1,10 +1,13 @@
 <?php
 session_start();
-if (isset($_SESSION['isLogin'])) {
-  header('Location:dashboard/');
+require('config/connection.php');
+$connect = new dbConnect();
+
+$db = $connect->dbConnection();
+
+if (isset($_SESSION['helpSession'])) {
+  header('Location:helpDesk/');
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -16,12 +19,7 @@ if (isset($_SESSION['isLogin'])) {
   <!-- plugins:css -->
   <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- Plugin css for this page -->
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
-  <!-- endinject -->
-  <!-- Layout styles -->
+
   <link rel="stylesheet" href="assets/css/style.css">
   <!-- End layout styles -->
   <link rel="shortcut icon" href="assets/images/favicon.png" />
@@ -44,16 +42,15 @@ if (isset($_SESSION['isLogin'])) {
                 <?php
 
                 if (isset($_GET['error'])) {
-                  $errorMessage = $_GET['error']; ?>
+                  $errorMessage = $_GET['error']; 
+                  ?>
 
                   <div class="alert alert-danger"><?php echo $errorMessage ?></div>
 
                 <?php
-
                 }
-
                 ?>
-                <form action="backend/loginController.php" method="POST" enctype="multipart/form-data">
+                <form action="backend/helpLogin.php" method="POST" enctype="multipart/form-data">
                   <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                     <p class="lead fw-normal mb-0 me-3">Contact us</p>
                     <a href="https://www.facebook.com/Nationaltransportsplc/" class="btn btn-primary btn-floating mx-1">
@@ -75,9 +72,23 @@ if (isset($_SESSION['isLogin'])) {
 
                   <!-- Email input -->
                   <div class="form-outline mb-4">
-                    <input type="text" id="form3Example3" class="form-control form-control-lg p_input" placeholder="Enter username" name="username" />
-                    <label class="form-label" for="form3Example3">Username</label>
+                    <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Department</label>
+                    <div class="col-sm-9">
+                      <select name="dep" id="" class="form-control p_input">
+                      <?php
+                                        $stm = $db->prepare("SELECT * FROM department");
+                                        $stm->execute();
+                                        foreach ($stm->fetchAll() as $item) { ?>
+                                            <option value="<?php echo $item['dep'] ?>"><?php echo $item['dep'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                      </select>     
+                    </div>
                   </div>
+
+
+
 
                   <!-- Password input -->
                   <div class="form-outline mb-3">
