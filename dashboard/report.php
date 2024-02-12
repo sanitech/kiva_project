@@ -27,13 +27,41 @@ $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" integrity="sha384-4LISF5TTJX/fLmGSxO53rV4miRxdg84mZsxmO8Rx5jGtp/LbrixFETvWa5a6sESd" crossorigin="anonymous">
 </head>
 <style>
-
+.date-picker{
+    /* height: 2rem; */
+    background-color: #ddd;
+    border: none;
+    padding: 10px 10px;
+    margin-right: 10px;
+}
+.date-picker:active{
+    border: 1px solid #ddd;
+}
+.btn-sub{
+    background-color: blueviolet;
+    color: #fff;
+    padding: 10px 10px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 0 10 0 blueviolet ;
+}
+.rest{
+    background-color: red;
+    margin-left: 10px;
+}
 </style>
 
 <body>
     <div class="container">
-
         <div class="print-controller">
+            <form action="" method="get" enctype="multipart/form-data">
+                <input type="date" name="start" id="" class="date-picker">
+                <input type="date" name="end" id="" class="date-picker">
+                <button class="btn-sub ">Generate</button>
+            </form>
+           <a href="report.php"> <button class="btn-sub rest">Reset Filter</button></a>
             <i class="bi bi-printer" onclick="print()"></i>
             <a href="./"> <i class="bi bi-arrow-left"></i></a>
         </div>
@@ -62,7 +90,12 @@ $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
             </thead>
             <tbody>
                 <?php
-                if ($userInfo['dep'] == 'super') {
+                if(isset($_GET['start'])&& isset($_GET['end'])){
+                    $start=$_GET['start'];
+                    $end=$_GET['end'];
+                    $stm = $db->prepare("SELECT * FROM helpdesk WHERE date BETWEEN '$start' AND '$end' ORDER BY create_time DESC");
+                }
+                elseif($userInfo['dep'] == 'super') {
                     $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC");
                 } else {
                     $stm = $db->prepare("SELECT * FROM helpdesk WHERE by_who='$userInfo[username]' ORDER BY create_time DESC");
