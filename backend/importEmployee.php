@@ -10,6 +10,12 @@ $employeeFile = $_FILES['empData'];
 
 var_dump($_FILES['empData']);
 
+if($employeeFile['size'] <= 0)
+{
+    header('location:../dashboard/employee.php?error=Excel file required!!! please insert and upload');
+    exit();
+}
+
 $fileDir='../Data/employee/';
 if(!is_dir($fileDir)){
     mkdir($fileDir, 0755, true);

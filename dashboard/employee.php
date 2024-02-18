@@ -5,12 +5,7 @@ include_once "header.PHP";
 <!-- partial -->
 <div class="main-panel">
     <div class="content-wrapper">
-        <div class="row">
-            <div class="col-md-7 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title"><?php echo isset($_GET['id']) ? "Update Employee Record" : "Record  Employee" ?></h4>
-                        <?php
+    <?php
                         if (isset($_GET['error'])) {
                             $errMessage = $_GET['error'];
                         ?>
@@ -32,6 +27,12 @@ include_once "header.PHP";
                             $employeeData = $stm->fetch(PDO::FETCH_ASSOC);
                         }
                         ?>
+        <div class="row">
+            <div class="col-md-7 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title"><?php echo isset($_GET['id']) ? "Update Employee Record" : "Record  Employee" ?></h4>
+                        
                         <form class="forms-sample" action="../backend/employeeRecord.php" method="post" enctype="multipart/form-data">
                             <div class="form-group row">
                                 <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Full name</label>
