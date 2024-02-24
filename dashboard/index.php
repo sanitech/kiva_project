@@ -136,7 +136,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
                     $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC");
                     $stm->execute();
                     foreach ($stm->fetchAll() as $users) :
-                      if($users['by_who'] !== $userInfo['username'] && $users['by_who'] !== 'all') continue;
+                      if ($users['by_who'] !== $userInfo['username'] && $users['by_who'] !== 'all') continue;
                       $type = $users['error_type'];
                       $stm = $db->prepare("SELECT * FROM error WHERE error_type = '$type'");
                       $stm->execute();
@@ -283,58 +283,257 @@ $status = ['open', 'done', 'waiting', 'out source'];
     } else if ($userType === 'super') {
     ?>
 
-      <div class="row ">
-        <div class="col-12 grid-margin">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">User Management </h4>
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
+      <div class="accordion mt-3" id="accordionExample">
+        <div class="card accordion-item active">
+          <h2 class="accordion-header" id="headingOne">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
+              User Management
+            </button>
+          </h2>
 
-                      <th> id </th>
-                      <th> UserName </th>
-                      <th> Department </th>
-                      <th> Status </th>
+          <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body" style="background-color: #191C24 !important;>
+              <div class="row ">
+                <div class="col-12 grid-margin">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">User Management </h4>
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
 
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
+                              <th> id </th>
+                              <th> UserName </th>
+                              <th> Department </th>
+                              <th> Status </th>
 
-                    $stm = $db->prepare("SELECT * FROM users ORDER BY last_login DESC");
-                    $stm->execute();
-                    foreach ($stm->fetchAll() as $i => $users) :
-                      if ($users['dep']==='super'||$users['dep']==='admin'|| $users['dep'] === 'ict' || $users['dep']==='ICT') continue;
-                    ?>
-                      <tr>
-                        <td><?php echo ++$i ?></td>
-                     
-                        <td>
-                          <?php echo ucwords($users['username']) ?>
-                        </td>
-                        <td>
-                          <?php echo ucwords($users['dep']) ?>
-                        </td>
-                        <td>
-                          <a href="../backend/statusUpdater.php?id=<?php echo $users['uid'] ?>&from=index">
-                            <div class="status badge badge-outline-<?php echo $users['status']?'success':'danger' ?>"><?php echo $users['status']?'Enabled':'Disable' ?></div>
-                          </a>
-                        </td>
-                      </tr>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php
 
-                    <?php
-                    endforeach;
-                    ?>
+                            $stm = $db->prepare("SELECT * FROM users ORDER BY last_login DESC");
+                            $stm->execute();
+                            foreach ($stm->fetchAll() as $i => $users) :
+                              if ($users['dep'] === 'super' || $users['dep'] === 'admin' || $users['dep'] === 'ict' || $users['dep'] === 'ICT') continue;
+                            ?>
+                              <tr>
+                                <td><?php echo ++$i ?></td>
 
-                  </tbody>
-                </table>
+                                <td>
+                                  <?php echo ucwords($users['username']) ?>
+                                </td>
+                                <td>
+                                  <?php echo ucwords($users['dep']) ?>
+                                </td>
+                                <td>
+                                  <a href="../backend/statusUpdater.php?id=<?php echo $users['uid'] ?>&from=index">
+                                    <div class="status badge badge-outline-<?php echo $users['status'] ? 'success' : 'danger' ?>"><?php echo $users['status'] ? 'Enabled' : 'Disable' ?></div>
+                                  </a>
+                                </td>
+                              </tr>
+
+                            <?php
+                            endforeach;
+                            ?>
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div class=" accordion-item card bg-success" style="background-color: #191C24 !important;">
+          <h2 class="accordion-header" id="headingTwo">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">
+              Help Desk
+            </button>
+          </h2>
+          <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div class="accordion-body" style="background-color: #191C24 !important;">
+              <div class="row ">
+                <div class="col-12 grid-margin">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Help Desk </h4>
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+
+                              <th> id </th>
+                              <th> Error Type </th>
+                              <th> Department </th>
+                              <th> Subject </th>
+                              <th> created By </th>
+                              <th> Created </th>
+                              <th> From </th>
+                              <th> Status </th>
+                              <th> End Time </th>
+                              <th> Cause </th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php
+
+                            $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC");
+                            $stm->execute();
+                            foreach ($stm->fetchAll() as $users) :
+                              if ($users['by_who'] !== $userInfo['username'] && $users['by_who'] !== 'all') continue;
+                              $type = $users['error_type'];
+                              $stm = $db->prepare("SELECT * FROM error WHERE error_type = '$type'");
+                              $stm->execute();
+                              $error = $stm->fetch(PDO::FETCH_ASSOC);
+
+                            ?>
+                              <tr>
+
+                                <td> <?php echo $error['error_code'] ? $error['error_code'] : '' ?> </td>
+                                <!-- <td>
+                        <?php if ($users['screenshot']) { ?>
+                          <img src="<?php echo $users['screenshot'] ?>" alt="image" id="screenshot" onclick="viewScreenSot('<?php echo $users['screenshot'] ?>')" />
+                        <?php } else {
+                        ?>
+                          <div class="badge badge-outline-warning">No screenshot</div>
+
+                        <?php
+                              } ?>
+                      </td> -->
+                                <td>
+                                  <?php echo $users['error_type'] ?>
+
+                                </td>
+                                <td> <?php echo $users['dep'] ?> </td>
+                                <td> <?php echo $users['subject'] ?> </td>
+                                <td> <?php echo $users['fname'] ?> </td>
+                                <td> <?php echo $users['location'] ?> </td>
+                                <td> <?php echo timeago($users['create_time']) ?> </td>
+                                <td>
+                                  <?php
+                                  if ($users['cause'] === '') {
+
+                                  ?>
+                                    <style>
+                                      .status-container {
+                                        display: grid;
+                                        grid-template-columns: 1fr 1fr;
+                                        grid-template-rows: 1fr 1fr;
+                                        grid-template-areas: 'status selector'
+                                          'cause cause';
+                                        gap: 10px;
+
+                                      }
+
+                                      .cause {
+                                        grid-area: cause;
+                                      }
+
+                                      .status {
+                                        grid-area: status;
+                                      }
+
+                                      .selector {
+                                        grid-area: selector;
+                                      }
+                                    </style>
+                                  <?php
+
+                                  } else {
+                                  ?>
+                                    <style>
+                                      .status-container {
+                                        display: flex;
+                                        gap: 5px;
+
+                                      }
+                                    </style>
+                                  <?php
+                                  } ?>
+
+
+                                  <?php
+
+                                  if ($users['status'] !== 'done') {
+                                    if ($users['status'] !== 'send') {
+                                  ?>
+                                      <div class="status-container">
+
+
+                                        <div class="status badge badge-outline-<?php if ($users['status'] === 'out source') echo 'danger';
+                                                                                if ($users['status'] === 'waiting') echo 'warning';
+                                                                                if ($users['status'] === 'open') echo 'info' ?>"><?php echo $users['status'] ?></div>
+
+
+                                        <button type="button" class="btn btn-danger cause" style="display: <?php echo $users['cause'] === '' ? 'block' : 'none' ?> ;" data-bs-toggle="modal" data-bs-target="#basicModal" onclick="setIssueID('<?php echo $users['issue_id'] ?>')">
+                                          Insert cause
+                                        </button>
+
+
+                                      <?php
+                                    }
+                                      ?>
+                                      <div class="dropdown selector">
+                                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuOutlineButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Status </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
+                                          <?php
+                                          foreach ($status as $key => $value) {
+                                            if ($users['status'] === $value) continue;
+                                          ?>
+                                            <a class="dropdown-item" href="../backend/responeHelpDesk.php?id=<?php echo $users['issue_id'] ?>&status=<?php echo $value ?>"><?php echo ucwords($value) ?></a>
+                                          <?php
+                                          }
+                                          ?>
+                                        </div>
+
+                                      </div>
+
+                                    <?php
+                                  } else { ?>
+                                      <div class="badge badge-outline-success">Done</div>
+                                    <?php
+                                  }
+                                    ?>
+                                      </div>
+                                </td>
+                                <td>
+                                  <?php
+                                  if ($users['work_start'] && $users['work_end']) {
+                                    $start = $users['work_start'] ? $users['work_start'] : $users['create_time'];
+                                    echo time_ago_def($users['work_start'], $users['work_end']);
+                                  }
+                                  ?>
+                                </td>
+
+                                <td>
+                                <td> <?php echo $users['cause'] ?> </td>
+
+                                </td>
+                              </tr>
+
+                            <?php
+                            endforeach;
+                            ?>
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
+
+
 
 
 
