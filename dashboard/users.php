@@ -150,7 +150,7 @@ include_once "header.PHP";
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>Reset</th>
-                                        <th>Status | Action</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -173,10 +173,7 @@ include_once "header.PHP";
                                                 <div class="status badge badge-outline-<?php echo $row['status'] ? 'success' : 'danger' ?>"><?php echo $row['status'] ? 'Enabled' : 'Disable' ?></div>
                                                 </a>
                                             
-                                                <a href="../backend/deleteUser.php?uid=<?php echo $row['uid'] ?>">
-                                                    <div class="badge badge-outline-danger pointer mr-3"><i class="mdi mdi-delete-forever"></i></div>
-                                                </a>
-
+                                                
                                             </td>
 
                                         </tr>

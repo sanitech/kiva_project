@@ -62,6 +62,9 @@ if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empt
     font-size: 1.2em;
     font-weight: 500;
 }
+.nowrap{
+    white-space: nowrap;
+}
 </style>
 
 <body>
@@ -99,6 +102,7 @@ if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empt
                     <th class="cell">From</th>
                     <th class="cell">Completed</th>
                     <th>Status</th>
+                    <th class="cell">Date</th>
                     <th class="cell">By Who</th>
                 </tr>
             </thead>
@@ -118,10 +122,10 @@ if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empt
                 foreach ($stm->fetchAll() as $help) :
                 ?>
                     <tr class="row">
-                        <td><?= $help['issue_id'] ?></td>
-                        <td><?= $help['error_type'] ?></td>
+                        <td class="nowrap"><?= $help['issue_id'] ?></td>
+                        <td class="nowrap"><?= $help['error_type'] ?></td>
                         <td><?= $help['dep'] ?></td>
-                        <td><?= $help['subject'] ?></td>
+                        <td class="nowrap"><?= $help['subject'] ?></td>
                         <td><?= $help['location'] ?></td>
                         <td> <?php
                                 if ($help['work_start'] && $help['work_end']) {
@@ -137,7 +141,8 @@ if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empt
                                                         if ($help['status'] === 'done') echo 'success';
                                                         if ($help['status'] === 'send') echo 'danger' ?>"> <?= $help['status'] ?> </div>
                         </td>
-                        <td><?= ucwords($help['by_who']) ?></td>
+                        <td class="nowrap"><?= date("Y-m-d", strtotime($help['create_time']))  ?></td>
+                        <td class="nowrap"><?= ucwords($help['by_who']) ?></td>
 
                     </tr>
                 <?php
