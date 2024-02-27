@@ -17,11 +17,15 @@ $dep = $_POST['dep'];
 $location = $_POST['location'];
 $price = $_POST['price'];
 $Date = $_POST['date'];
+$status = $_POST['status'];
+$pImage = $_FILES['pImage'];
 
 if (empty($sn) || empty($product) || empty($for)|| empty($Date)) {
     header('location:../dashboard/addproduct.php?error=Failed required');
     exit();
 }
+
+
 
 
 $stm = $db->prepare("SELECT * FROM product WHERE sn = '$sn'");
@@ -33,8 +37,17 @@ if ($stm->rowCount() > 0) {
 }
 
 
+if(!empty($_FILES['pImage']['name']) ){
+    $fileDir='../Data/product/';
+    if(!is_dir($fileDir)){
+        mkdir($fileDir, 0755, true);
+    }
+    $productImagePath= $fileDir. $pImage['name'];  
+    move_uploaded_file($_FILES['pImage']['tmp_name'], $productImagePath);
+}
 
-$stm = $db->prepare("INSERT INTO product (sn, product, employee, item, location, model, dep, price, date) VALUES ('$sn', '$product', '$for', '$item', '$location', '$model', '$dep', '$price', '$Date')");
+
+$stm = $db->prepare("INSERT INTO product (sn, product, employee, item, location, model, dep, price, date, status, p_image) VALUES ('$sn', '$product', '$for', '$item', '$location', '$model', '$dep', '$price', '$Date', '$status', '$productImagePath')");
 if ($stm->execute()) {
     header('location:../dashboard/addproduct.php?success=successfully registered');
 }

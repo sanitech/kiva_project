@@ -6,7 +6,7 @@ include_once "header.PHP";
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
-            <div class="col-md-10 grid-margin stretch-card">
+            <div class="col-md-10">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Record Product</h4>
@@ -102,8 +102,33 @@ include_once "header.PHP";
                                     <input type="date" class="form-control" id="exampleInputMobile" name="date" placeholder="please enter Location">
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="exampleInputMobile" class="col-sm-3 col-form-label">Product Image</label>
+                                <div class="col-sm-9">
+                                    <div class="form-group row">
+                                        <input type="file" name="pImage" class="file-upload-default">
+                                        <div class="input-group col-xs-12">
+                                            <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                                            <span class="input-group-append">
+                                                <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="exampleInputMobile" class="col-sm-3 col-form-label">Status</label>
+                                <div class="col-sm-9">
+                                    <select name="status" id="" class="form-control">
+                                        <option value="New">New</option>
+                                        <option value="Used">Used</option>
+                                </div>
+                            </div>
+                            <input type="submit" name="" class="btn btn-primary me-2 col-sm-3" id="" value="Record">
 
-                            <button type="submit" class="btn btn-primary me-2">Record</button>
+                                
+
+
                         </form>
                     </div>
                 </div>
@@ -116,20 +141,21 @@ include_once "header.PHP";
 <!-- main-panel ends -->
 
 <script>
-
-    const departmentHandler=(e)=>{
+    const departmentHandler = (e) => {
         console.log(e.target.value)
-       const al=document.querySelector('.dep')
-       $.ajax({
+        const al = document.querySelector('.dep')
+        $.ajax({
 
-        url:'../backend/fetchEmployee.php',
-        method:'POST',
-        data:{name:e.target.value},
-        success:(data)=>{
-            console.log(data)
-            al.value=data
-        }
-       })
+            url: '../backend/fetchEmployee.php',
+            method: 'POST',
+            data: {
+                name: e.target.value
+            },
+            success: (data) => {
+                console.log(data)
+                al.value = data
+            }
+        })
     }
 </script>
 
