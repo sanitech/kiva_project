@@ -33,7 +33,7 @@ include_once "header.PHP";
                     <div class="card-body">
                         <h4 class="card-title"><?php echo isset($_GET['id']) ? "Update Employee Record" : "Record  Employee" ?></h4>
                         
-                        <form class="forms-sample" action="../backend/employeeRecord.php" method="post" enctype="multipart/form-data">
+                        <form class="forms-sample" action="<?php echo isset($_GET['id']) ? "../backend/employeeRecord.php" : "../backend/employeeRecord.php" ?>" method="post" enctype="multipart/form-data">
                             <div class="form-group row">
                                 <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Full name</label>
                                 <div class="col-sm-9">
@@ -134,7 +134,7 @@ include_once "header.PHP";
 
                                         <td><a href="employee.php?id=<?php echo $row['id'] ?>">
                                                 <label class="badge badge-warning pointer"><i class="mdi mdi-pen"></i></label></a>
-                                            <a href="../backend/removeItem.php?id=<?php echo $row['id'] ?>">
+                                            <a href="../backend/removeItemEmployee.php?id=<?php echo $row['id'] ?>">
                                                 <label class="badge badge-danger pointer"><i class="mdi mdi-delete-forever"></i></label></a>
                                         </td>
 
