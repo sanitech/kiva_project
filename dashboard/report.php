@@ -14,9 +14,9 @@ $stm = $db->prepare("SELECT * FROM users WHERE uid='$uid'");
 $stm->execute();
 
 $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
-if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empty($_GET['end'])){
-    $start=$_GET['start'];
-    $end=$_GET['end'];  
+if (isset($_GET['start']) && isset($_GET['end']) && !empty($_GET['start']) && !empty($_GET['end'])) {
+    $start = $_GET['start'];
+    $end = $_GET['end'];
 }
 ?>
 
@@ -32,39 +32,44 @@ if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empt
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" integrity="sha384-4LISF5TTJX/fLmGSxO53rV4miRxdg84mZsxmO8Rx5jGtp/LbrixFETvWa5a6sESd" crossorigin="anonymous">
 </head>
 <style>
-.date-picker{
-    /* height: 2rem; */
-    background-color: #ddd;
-    border: none;
-    padding: 10px 10px;
-    margin-right: 10px;
-}
-.date-picker:active{
-    border: 1px solid #ddd;
-}
-.btn-sub{
-    background-color: blueviolet;
-    color: #fff;
-    padding: 10px 10px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    border-radius: 5px;
-    box-shadow: 0 0 10 0 blueviolet ;
-}
-.rest{
-    background-color: red;
-    margin-left: 10px;
-}
-.form-container label{
-    font-family:  sans-serif;
-    margin-right: 10px;
-    font-size: 1.2em;
-    font-weight: 500;
-}
-.nowrap{
-    white-space: nowrap;
-}
+    .date-picker {
+        /* height: 2rem; */
+        background-color: #ddd;
+        border: none;
+        padding: 10px 10px;
+        margin-right: 10px;
+    }
+
+    .date-picker:active {
+        border: 1px solid #ddd;
+    }
+
+    .btn-sub {
+        background-color: blueviolet;
+        color: #fff;
+        padding: 10px 10px;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        border-radius: 5px;
+        box-shadow: 0 0 10 0 blueviolet;
+    }
+
+    .rest {
+        background-color: red;
+        margin-left: 10px;
+    }
+
+    .form-container label {
+        font-family: sans-serif;
+        margin-right: 10px;
+        font-size: 1.2em;
+        font-weight: 500;
+    }
+
+    .nowrap {
+        white-space: nowrap;
+    }
 </style>
 
 <body>
@@ -77,7 +82,7 @@ if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empt
                 <input type="date" name="end" id="end" class="date-picker">
                 <button class="btn-sub" type="submit ">Generate</button>
             </form>
-           <a href="report.php"> <button class="btn-sub rest">Reset Filter</button></a>
+            <a href="report.php"> <button class="btn-sub rest">Reset Filter</button></a>
             <i class="bi bi-printer" onclick="print()"></i>
             <a href="./"> <i class="bi bi-arrow-left"></i></a>
         </div>
@@ -89,7 +94,7 @@ if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empt
             <div class="report-info">
 
                 <div class="date"><?php echo date('d-m-Y H:i a') ?></div>
-                <div class="title">All report <?= isset($start)&& isset($end)?$start. ' / '. $end:'' ?></div>
+                <div class="title">All report <?= isset($start) && isset($end) ? $start . ' / ' . $end : '' ?></div>
             </div>
         </div>
         <table class="table">
@@ -108,12 +113,11 @@ if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empt
             </thead>
             <tbody>
                 <?php
-                if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empty($_GET['end'])){
-                    $start=$_GET['start'];
-                    $end=$_GET['end'];  
+                if (isset($_GET['start']) && isset($_GET['end']) && !empty($_GET['start']) && !empty($_GET['end'])) {
+                    $start = $_GET['start'];
+                    $end = $_GET['end'];
                     $stm = $db->prepare("SELECT * FROM helpdesk WHERE date BETWEEN '$start' AND '$end' ORDER BY create_time DESC");
-                }
-                elseif($userInfo['dep'] == 'super') {
+                } elseif ($userInfo['dep'] == 'super') {
                     $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC");
                 } else {
                     $stm = $db->prepare("SELECT * FROM helpdesk WHERE by_who='$userInfo[username]' ORDER BY create_time DESC");
@@ -150,6 +154,24 @@ if(isset($_GET['start']) && isset($_GET['end'])&& !empty($_GET['start'])&& !empt
                 ?>
             </tbody>
         </table>
+        <div class="card-container">
+            <?php
+            $stm = $db->prepare("SELECT * FROM department");
+            $stm->execute();
+            foreach ($stm->fetchAll() as $i => $row) {
+
+                 $stm=$db->prepare("SELECT * FROM helpdesk WHERE dep=:dep AND  by_who='$userInfo[username]'");
+                 $stm->execute([':dep'=>$row['dep']]);
+                 $count=$stm->rowCount();
+            ?>
+                <div class="card">
+                    <div class="count-dep"><?= $count?> </div>
+                    <span class="dep-name"><?= $row['dep'] ?></span>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
     </div>
 
 </body>
