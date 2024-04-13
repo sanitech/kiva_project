@@ -7,8 +7,12 @@ require "timeAgoDef.php";
 
 
 $status = ['open', 'done', 'waiting', 'out source'];
+
+
+
 ?>
 <link rel="stylesheet" href="../assets/css/u.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css">
 <!-- partial -->
 <div class="main-panel">
   <div class="content-wrapper">
@@ -30,7 +34,6 @@ $status = ['open', 'done', 'waiting', 'out source'];
                                       $items = $item['item'];
                                       $stm = $db->prepare("SELECT * FROM product WHERE item ='$items'");
                                       $stm->execute();
-
                                       echo  $stm->rowCount() > 0 ?  $stm->rowCount() : 0;
                                       ?></h3>
                     <!-- <p class="text-success ms-2 mb-0 font-weight-medium">+3.5%</p> -->
@@ -55,7 +58,6 @@ $status = ['open', 'done', 'waiting', 'out source'];
       $errMessage = $_GET['error'];
     ?>
       <div class="alert alert-danger"><?php echo $errMessage ?></div>
-
     <?php
     }
     if (isset($_GET['success'])) {
@@ -113,7 +115,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
             <div class="card-body">
               <h4 class="card-title">Help Desk </h4>
               <div class="table-responsive">
-                <table class="table">
+                <table class="table" id="myTable">
                   <thead>
                     <tr>
 
@@ -133,7 +135,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
                   <tbody>
                     <?php
 
-                    $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC");
+                    $stm = $db->prepare("SELECT * FROM helpdesk  ORDER BY create_time DESC  LIMIT $starting_limit, $results_per_page ");
                     $stm->execute();
                     foreach ($stm->fetchAll() as $users) :
                       if ($users['by_who'] !== $userInfo['username'] && $users['by_who'] !== 'all') continue;
@@ -274,14 +276,22 @@ $status = ['open', 'done', 'waiting', 'out source'];
                   </tbody>
                 </table>
               </div>
+
+              <?php
+              $tableName = "helpdesk";
+              require('pagination.php');
+              ?>
             </div>
           </div>
         </div>
       </div>
-
     <?php
+
+
+
     } else if ($userType === 'super') {
     ?>
+
 
       <div class="accordion mt-3" id="accordionExample">
         <div class="card accordion-item active">
@@ -292,9 +302,9 @@ $status = ['open', 'done', 'waiting', 'out source'];
           </h2>
 
           <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-            <div class="accordion-body" style="background-color: #191C24 !important;>
-              <div class="row ">
-                <div class="col-12 grid-margin">
+            <div class="accordion-body" style="background-color: #191C24 !important;">
+              <div class=" row ">
+                <div class=" col-12 grid-margin">
                   <div class="card">
                     <div class="card-body">
                       <h4 class="card-title">User Management </h4>
@@ -313,7 +323,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
                           <tbody>
                             <?php
 
-                            $stm = $db->prepare("SELECT * FROM users ORDER BY last_login DESC");
+                            $stm = $db->prepare("SELECT * FROM users ORDER BY last_login DESC LIMIT $starting_limit, $results_per_page");
                             $stm->execute();
                             foreach ($stm->fetchAll() as $i => $users) :
                               if ($users['dep'] === 'super' || $users['dep'] === 'admin' || $users['dep'] === 'ict' || $users['dep'] === 'ICT') continue;
@@ -341,6 +351,10 @@ $status = ['open', 'done', 'waiting', 'out source'];
                           </tbody>
                         </table>
                       </div>
+                      <?php
+                      $tableName = "users";
+                      require('pagination.php');
+                      ?>
                     </div>
                   </div>
                 </div>
@@ -362,7 +376,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
                     <div class="card-body">
                       <h4 class="card-title">Help Desk </h4>
                       <div class="table-responsive">
-                        <table class="table">
+                        <table class="table" id="myTable">
                           <thead>
                             <tr>
 
@@ -382,7 +396,7 @@ $status = ['open', 'done', 'waiting', 'out source'];
                           <tbody>
                             <?php
 
-                            $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC");
+                            $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC LIMIT $starting_limit, $results_per_page");
                             $stm->execute();
                             foreach ($stm->fetchAll() as $users) :
                               if ($users['by_who'] !== $userInfo['username'] && $users['by_who'] !== 'all') continue;
@@ -523,6 +537,10 @@ $status = ['open', 'done', 'waiting', 'out source'];
                           </tbody>
                         </table>
                       </div>
+                      <?php
+                      $tableName = "helpdesk";
+                      require('pagination.php');
+                      ?>
                     </div>
                   </div>
                 </div>
@@ -552,8 +570,16 @@ $status = ['open', 'done', 'waiting', 'out source'];
 
 <!-- main-panel ends -->
 
-
+<script src="https://cdn.datatables.net/v/bs5/dt-2.0.3/datatables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
 <script>
+  // let table = new DataTable('#myTable');
+  // $(document).ready(function() {
+  //   alert('TableMode');
+  //   new DataTable('#myTable');
+  // });
+
   const viewScreenSot = (screenshot) => {
     let screenshotView = document.querySelector('#screenshotView');
 

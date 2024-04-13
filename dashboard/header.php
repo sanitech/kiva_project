@@ -13,10 +13,22 @@ $connect = new dbConnect();
 
 $db = $connect->dbConnection();
 
-$stm=$db->prepare("SELECT * FROM users WHERE uid='$uid'");
+$stm = $db->prepare("SELECT * FROM users WHERE uid='$uid'");
 $stm->execute();
 
 $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
+// Pagination configuration
+$results_per_page = 10;
+
+// Determine current page number
+if (!isset($_GET['page'])) {
+  $page = 1;
+} else {
+  $page = $_GET['page'];
+}
+
+// Calculate starting limit for results
+$starting_limit = ($page - 1) * $results_per_page;
 
 ?>
 <!DOCTYPE html>
@@ -44,6 +56,8 @@ $userInfo = $stm->fetch(PDO::FETCH_ASSOC);
     <!-- End layout styles -->
     <link rel="shortcut icon" href="../assets/images/favicon.png" />
     <script src="../assets/js/jquery.js"></script>
+ 
+
 </head>
 
 <body>

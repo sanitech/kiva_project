@@ -107,7 +107,7 @@ $today=date('Y-m-d');
                     <th class="cell">Subject</th>
                     <th class="cell">From</th>
                     <th class="cell">Completed</th>
-                    <th>Status</th>
+                    <th class="cell">Status</th>
                     <th class="cell">Date</th>
                     <th class="cell">By Who</th>
                 </tr>
@@ -121,7 +121,7 @@ $today=date('Y-m-d');
                 } elseif ($userInfo['dep'] == 'super') {
                     $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC");
                 } else {
-                    $stm = $db->prepare("SELECT * FROM helpdesk WHERE AND date='$today' by_who='$userInfo[username]' ORDER BY create_time DESC");
+                    $stm = $db->prepare("SELECT * FROM helpdesk WHERE  date='$today' AND by_who='$userInfo[username]' ORDER BY create_time DESC");
                 }
                 $stm->execute();
                 foreach ($stm->fetchAll() as $help) :

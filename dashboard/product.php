@@ -3,6 +3,7 @@ include_once "header.PHP";
 ?>
 <link rel="stylesheet" href="../assets/css/u.css">
 <!-- partial -->
+
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
@@ -69,7 +70,7 @@ include_once "header.PHP";
                         }
                         ?>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th>Item</th>
@@ -125,6 +126,10 @@ include_once "header.PHP";
                             </table>
                         </div>
                     </div>
+                    <?php
+                      $tableName = "product";
+                      require('pagination.php');
+                      ?>
                 </div>
             </div>
         </div>
@@ -132,6 +137,7 @@ include_once "header.PHP";
     </div>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script type="text/javascript">
     const viewProductImage = (viewProductImage) => {
