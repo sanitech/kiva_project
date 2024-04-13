@@ -122,7 +122,7 @@ include_once "header.PHP";
                             </thead>
                             <tbody>
                                 <?php
-                                $stm = $db->prepare("SELECT * FROM employee");
+                                $stm = $db->prepare("SELECT * FROM employee LIMIT $starting_limit, $results_per_page");
                                 $stm->execute();
                                 foreach ($stm->fetchAll() as $i => $row) {
                                 ?>
@@ -147,6 +147,10 @@ include_once "header.PHP";
                         </table>
                     </div>
                 </div>
+                <?php
+                      $tableName = "employee";
+                      require('pagination.php');
+                      ?>
             </div>
 
 

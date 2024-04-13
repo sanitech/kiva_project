@@ -89,7 +89,7 @@ include_once "header.PHP";
                                 </thead>
                                 <tbody id="productTable">
                                     <?php
-                                    $stm = $db->prepare("SELECT * FROM product ORDER BY date desc");
+                                    $stm = $db->prepare("SELECT * FROM product ORDER BY date desc LIMIT $starting_limit, $results_per_page");
                                     $stm->execute();
                                     foreach ($stm->fetchAll() as $row) {
                                         $pimage = $row['p_image'];

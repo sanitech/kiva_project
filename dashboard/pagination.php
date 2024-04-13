@@ -20,7 +20,7 @@
 
                         // First page link
                         if ($page > 5) {
-                          echo "<a href='?page=' class='btn btn-outline-warning'>First</a>";
+                          echo "<a href='?page=1' class='btn btn-outline-warning d-flex align-items-center'>First</a>";
                           echo "<span>...</span>";
                         }
 
@@ -36,7 +36,7 @@
                         // Last page link
                         if ($page < $total_pages - 4) {
                           echo "<span>...</span>";
-                          echo "<a href='your_page.php?page=" . $total_pages . "' >Last</a>";
+                          echo "<a href='?page=" . $total_pages . "' class='btn btn-outline-warning d-flex align-items-center' >Last</a>";
                         }
 
                         // Next page link
