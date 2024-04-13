@@ -18,6 +18,7 @@ if (isset($_GET['start']) && isset($_GET['end']) && !empty($_GET['start']) && !e
     $start = $_GET['start'];
     $end = $_GET['end'];
 }
+$today=date('Y-m-d');
 ?>
 
 <!DOCTYPE html>
@@ -120,7 +121,7 @@ if (isset($_GET['start']) && isset($_GET['end']) && !empty($_GET['start']) && !e
                 } elseif ($userInfo['dep'] == 'super') {
                     $stm = $db->prepare("SELECT * FROM helpdesk ORDER BY create_time DESC");
                 } else {
-                    $stm = $db->prepare("SELECT * FROM helpdesk WHERE by_who='$userInfo[username]' ORDER BY create_time DESC");
+                    $stm = $db->prepare("SELECT * FROM helpdesk WHERE AND date='$today' by_who='$userInfo[username]' ORDER BY create_time DESC");
                 }
                 $stm->execute();
                 foreach ($stm->fetchAll() as $help) :
@@ -154,19 +155,60 @@ if (isset($_GET['start']) && isset($_GET['end']) && !empty($_GET['start']) && !e
                 ?>
             </tbody>
         </table>
+        <div class="card-title">Report by Department</div>
+
         <div class="card-container">
             <?php
+              
+
             $stm = $db->prepare("SELECT * FROM department");
             $stm->execute();
             foreach ($stm->fetchAll() as $i => $row) {
+                if (isset($_GET['start']) && isset($_GET['end']) && !empty($_GET['start']) && !empty($_GET['end'])) {
+                    $start = $_GET['start'];
+                    $end = $_GET['end'];
+                    $stm = $db->prepare("SELECT * FROM helpdesk WHERE dep=:dep AND date BETWEEN '$start' AND '$end' ORDER BY create_time DESC");
+                } elseif ($userInfo['dep'] == 'super') {
+                    $stm = $db->prepare("SELECT * FROM helpdesk WHERE dep=:dep  ORDER BY create_time DESC");
+                } else {
+                    $stm = $db->prepare("SELECT * FROM helpdesk WHERE dep=:dep AND by_who='$userInfo[username]' AND date='$today' ORDER BY create_time DESC");
+                }
 
-                 $stm=$db->prepare("SELECT * FROM helpdesk WHERE dep=:dep AND  by_who='$userInfo[username]'");
                  $stm->execute([':dep'=>$row['dep']]);
                  $count=$stm->rowCount();
             ?>
                 <div class="card">
                     <div class="count-dep"><?= $count?> </div>
                     <span class="dep-name"><?= $row['dep'] ?></span>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+        <div class="card-title">Report by Errors</div>
+        <div class="card-container">
+            <?php
+              
+
+            $stm = $db->prepare("SELECT * FROM error");
+            $stm->execute();
+            foreach ($stm->fetchAll() as $i => $row) {
+                if (isset($_GET['start']) && isset($_GET['end']) && !empty($_GET['start']) && !empty($_GET['end'])) {
+                    $start = $_GET['start'];
+                    $end = $_GET['end'];
+                    $stm = $db->prepare("SELECT * FROM helpdesk WHERE error_type=:error_type AND date BETWEEN '$start' AND '$end' ORDER BY create_time DESC");
+                } elseif ($userInfo['dep'] == 'super') {
+                    $stm = $db->prepare("SELECT * FROM helpdesk WHERE error_type=:error_type  ORDER BY create_time DESC");
+                } else {
+                    $stm = $db->prepare("SELECT * FROM helpdesk WHERE error_type=:error_type AND by_who='$userInfo[username]' AND date='$today' ORDER BY create_time DESC");
+                }
+
+                 $stm->execute([':error_type'=>$row['error_type']]);
+                 $count=$stm->rowCount();
+            ?>
+                <div class="card">
+                    <div class="count-dep"><?= $count?> </div>
+                    <span class="dep-name"><?= $row['error_type'] ?></span>
                 </div>
             <?php
             }

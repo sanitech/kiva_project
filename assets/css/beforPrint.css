@@ -129,7 +129,12 @@ tr td {
     background-color: #f78a3d;
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex-grow: 14;
+}
+.card-title{
+    font-weight: bold;
+    font-size: 17px;
+    margin: 10px 0;
 }
 .count-dep{
     font-size: 22px;
